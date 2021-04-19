@@ -1,0 +1,14 @@
+{
+  "name": "ikimonoaz-article-exporter",
+  "version": "1.0.0",
+  "description": "Article exporter for Ikimono AZ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "t-sin <shinichi.tanaka45@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
