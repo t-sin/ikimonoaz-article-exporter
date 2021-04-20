@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <title>いきものAZ エクスポーター</title>
+    <style>
+            * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #f7f7f7;
+        color: #333333;
+      }
+      header {
+        padding: 30px;
+      }
+      footer {
+        padding: 1em 0;
+      }
+      h1 {
+        text-align: center;
+      }
+      #container {
+        margin: 0 auto;
+        max-width: 900px;
+      }
+      main {
+        padding: 40px;
+        background-color: #ffffff;
+        box-shadow: 2px 2px 4px 4px rgba(0,0,0,0.1);
+      }
+      section {
+        margin: 2em 0;
+      }
+      h2 {
+        margin-bottom: 0.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <h1>いきものAZ エクスポーター</h1>
+      </header>
+    
+      <main>
+        <section>
+          <h2>これは何？</h2>
+          <p><a href="https://ikimonoaz.ikimonopal.jp/">いきものAZ</a>の記事を含むユーザーデータのエクスポーターです。公式にはエクスポート機能は提供されていないようですので、自分用にエクスポートアプリをつくってみています。</p>
+          <p>おこられたら停止します。</p>
+        </section>
+
+        <section>
+          <h2>使い方</h2>
+          <p>（あとでかく…）</p>
+        </section>
+
+        <section>
+          <h2>ユーザデータのエクスポート</h2>
+          <form>
+            <label for="url">マイページのURL</label>
+            <input type="text" name="url" />
+            <button>エクスポート</button>
+          </form>
+        </section>
+      </main>
+
+      <footer>
+        <a href="https://github.com/t-sin/ikimonoaz-article-exporter">Source code hosted by GitHub</a>
+      </footer>
+
+      <script src="./src/index.js">
+        hello();
+      </script>
+    </body>
+</html>
