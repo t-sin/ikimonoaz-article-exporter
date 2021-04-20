@@ -121,11 +121,9 @@ const collect_all_user_data = async (user_id) => {
   };
 };
 
-///////////////////////////////////////////////
-const user_id = 7308; // 自分のID
-
-collect_all_user_data(user_id).then((articles) => {
-  console.log(articles);
-}).catch((e) => {
-  console.log(e);
-});
+module.exports.get_article = get_article;
+module.exports.collect_articles = collect_articles;
+module.exports.collect_comments = collect_comments;
+module.exports.get_user_info = get_user_info;
+module.exports.collect_all_articles = collect_all_articles;
+module.exports.collect_all_user_data = collect_all_user_data;
