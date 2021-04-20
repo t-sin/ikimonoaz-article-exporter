@@ -100,9 +100,6 @@ const collect_all_articles = async (user_id) => {
   return articles;
 }
 
-///////////////////////////////////////////////
-const user_id = 7308; // 自分のID
-
 const collect_all_user_data = async (user_id) => {
   const user = await get_user_info(user_id);
   let articles = await collect_all_articles(user_id);
@@ -123,6 +120,9 @@ const collect_all_user_data = async (user_id) => {
     articles: articles,
   };
 };
+
+///////////////////////////////////////////////
+const user_id = 7308; // 自分のID
 
 collect_all_user_data(user_id).then((articles) => {
   console.log(articles);
