@@ -7,6 +7,8 @@ import (
 	"net/http"
 
 	"golang.org/x/xerrors"
+
+	"ikimonoaz-exporter/userdata"
 )
 
 const baseURL string = "https://ikimonoaz.ikimonopal.jp/api"
@@ -31,25 +33,25 @@ func requestToIkimonoAZ(path string) ([]byte, error) {
 	return body, nil
 }
 
-func GetUserInfo(userID string) (User, error) {
+func GetUserInfo(userID string) (userdata.User, error) {
 	path := fmt.Sprintf("users/get?userId=%s", userID)
 	body, err := requestToIkimonoAZ(path)
 	if err != nil {
-		return User{}, err
+		return userdata.User{}, err
 	}
 
 	type Response struct {
-		Data User `json:"data"`
+		Data userdata.User `json:"data"`
 	}
 	var resp Response
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return User{}, err
+		return userdata.User{}, err
 	}
 
 	return resp.Data, nil
 }
 
-func CollectArticles(userID string, page int) ([]Article, error) {
+func CollectArticles(userID string, page int) ([]userdata.Article, error) {
 	path := fmt.Sprintf("articles/list?mypageUserId=%s&page=%d&stripHtml=0", userID, page)
 	body, err := requestToIkimonoAZ(path)
 	if err != nil {
@@ -57,7 +59,7 @@ func CollectArticles(userID string, page int) ([]Article, error) {
 	}
 
 	type Result struct {
-		Articles []Article `json:"articles"`
+		Articles []userdata.Article `json:"articles"`
 	}
 	type Response struct {
 		Data Result `json:"data"`
@@ -70,7 +72,7 @@ func CollectArticles(userID string, page int) ([]Article, error) {
 	return resp.Data.Articles, nil
 }
 
-func CollectComments(articleID string) ([]Comment, error) {
+func CollectComments(articleID string) ([]userdata.Comment, error) {
 	path := fmt.Sprintf("comments/list?articleId=%s&offset=0&isFuture=false", articleID)
 	body, err := requestToIkimonoAZ(path)
 	if err != nil {
@@ -78,7 +80,7 @@ func CollectComments(articleID string) ([]Comment, error) {
 	}
 
 	type Result struct {
-		Comments []Comment `json:"comments"`
+		Comments []userdata.Comment `json:"comments"`
 	}
 	type Response struct {
 		Data Result `json:"data"`
@@ -91,9 +93,9 @@ func CollectComments(articleID string) ([]Comment, error) {
 	return resp.Data.Comments, nil
 }
 
-func CollectAllArticles(userID string) ([]Article, error) {
+func CollectAllArticles(userID string) ([]userdata.Article, error) {
 	page := 1
-	allArticles := make([]Article, 0)
+	allArticles := make([]userdata.Article, 0)
 
 	for true {
 		articles, err := CollectArticles(userID, page)
@@ -112,27 +114,27 @@ func CollectAllArticles(userID string) ([]Article, error) {
 	return allArticles, nil
 }
 
-func CollectAllUserData(userID string) (UserData, error) {
+func CollectAllUserData(userID string) (userdata.UserData, error) {
 	user, err := GetUserInfo(userID)
 	if err != nil {
-		return UserData{}, err
+		return userdata.UserData{}, err
 	}
 
 	articles, err := CollectAllArticles(userID)
 	if err != nil {
-		return UserData{}, err
+		return userdata.UserData{}, err
 	}
 
 	for _, article := range articles {
 		comments, err := CollectComments(string(article.ID))
 		if err != nil {
-			return UserData{}, err
+			return userdata.UserData{}, err
 		}
 
 		article.CommentList = comments
 	}
 
-	userdata := UserData{
+	userdata := userdata.UserData{
 		User:     user,
 		Articles: articles,
 	}
