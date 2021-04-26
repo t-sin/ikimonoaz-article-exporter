@@ -10,14 +10,17 @@
 
 - [x] 記事とそのコメント、およびユーザ情報 (ユーザ名やプロフィール) を取得
 - [ ] 記事のメディア情報から写真および動画ファイルを取得
-- [ ] 取得したデータをローカルで閲覧可能なHTMLファイル群として出力
-- [ ] 上のファイル群をZipで固める
-- [ ] GitHub Pagesとして公開
-- [ ] 記事本文をMarkdownに変換
+- [x] 取得したデータをローカルで閲覧可能なHTMLファイル群として出力
+- [ ] GitHub Actionで配布用ファイルを生成
 
 ## 作者
 
 - t-sin (<shinichi.tanaka45@gmail.com>)
+
+## スペシャルサンクス (開発中ずっと聴いてた)
+
+- [いのかしら りす音頭](https://www.tokyo-zoo.net/topic/topics_detail?kind=news&inst=&link_num=25526)
+- [マヌルネコのうた](https://www.youtube.com/watch?v=5YLSP6b6yHg)
 
 ## ライセンス
 
