@@ -125,13 +125,13 @@ func CollectAllUserData(userID string) (userdata.UserData, error) {
 		return userdata.UserData{}, err
 	}
 
-	for _, article := range articles {
+	for i, article := range articles {
 		comments, err := CollectComments(article.ID)
 		if err != nil {
 			return userdata.UserData{}, err
 		}
 
-		article.CommentList = comments
+		articles[i].CommentList = comments
 	}
 
 	userdata := userdata.UserData{
