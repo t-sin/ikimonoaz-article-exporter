@@ -1,19 +1,20 @@
 package userdata
 
 import (
+	"regexp"
 	"time"
 )
 
 func (m Media) ToMap() interface{} {
 	return map[string]string{
-		"url": m.URL,
+		"url":       m.URL,
 		"thumbnail": m.Thumbnail,
 	}
 }
 
 func (c Creature) ToMap() interface{} {
 	return map[string]interface{}{
-		"name": c.Name,
+		"name":  c.Name,
 		"place": c.Place.Name,
 	}
 }
@@ -25,9 +26,12 @@ func (t Tag) ToMap() interface{} {
 }
 
 func (c Comment) ToMap() interface{} {
+	pat := regexp.MustCompile(`\n`)
+	comment := pat.ReplaceAllString(c.Comment, "<br />")
 	return map[string]string{
-		"comment": c.Comment,
-		"username": c.UserName,
+		"comment":    comment,
+		"username":   c.User.Name,
+		"created_at": c.CreatedAt.Format(time.RFC3339),
 	}
 }
 
@@ -48,8 +52,8 @@ func (a Article) ToMap() interface{} {
 	}
 
 	comments := make([]interface{}, len(a.CommentList))
-	for i, m := range a.CommentList {
-		comments[i] = m.ToMap()
+	for i, c := range a.CommentList {
+		comments[i] = c.ToMap()
 	}
 
 	title := a.Title
@@ -58,26 +62,26 @@ func (a Article) ToMap() interface{} {
 	}
 
 	return map[string]interface{}{
-		"id": a.ID,
-		"created_at": a.CreatedAt.Format(time.RFC3339),
-		"updated_at": a.UpdatedAt.Format(time.RFC3339),
+		"id":          a.ID,
+		"created_at":  a.CreatedAt.Format(time.RFC3339),
+		"updated_at":  a.UpdatedAt.Format(time.RFC3339),
 		"released_at": a.ReleasedAt.Format(time.RFC3339),
-		"title": title,
-		"contents": a.Contents,
-		"media": media,
-		"creatures": creatures,
-		"tags": tags,
-		"comments": comments,
+		"title":       title,
+		"contents":    a.Contents,
+		"media":       media,
+		"creatures":   creatures,
+		"tags":        tags,
+		"comments":    comments,
 	}
 }
 
 func (u User) ToMap() interface{} {
 	return map[string]interface{}{
-		"name": u.Name,
-		"profile": u.Profile,
+		"name":              u.Name,
+		"profile":           u.Profile,
 		"profile_image_url": u.ProfileImageURL,
-		"meister": u.MeisterList,
-		"place": u.PlaceName,
+		"meister":           u.MeisterList,
+		"place":             u.PlaceName,
 	}
 }
 
@@ -88,7 +92,7 @@ func (ud UserData) ToMap() interface{} {
 	}
 
 	return map[string]interface{}{
-		"user": ud.User.ToMap(),
+		"user":     ud.User.ToMap(),
 		"articles": articles,
 	}
 }
