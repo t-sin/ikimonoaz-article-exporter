@@ -52,12 +52,17 @@ func (a Article) ToMap() interface{} {
 		comments[i] = m.ToMap()
 	}
 
+	title := a.Title
+	if title == "" {
+		title = "(無題)"
+	}
+
 	return map[string]interface{}{
 		"id": a.ID,
 		"created_at": a.CreatedAt.Format(time.RFC3339),
 		"updated_at": a.UpdatedAt.Format(time.RFC3339),
 		"released_at": a.ReleasedAt.Format(time.RFC3339),
-		"title": a.Title,
+		"title": title,
 		"contents": a.Contents,
 		"media": media,
 		"creatures": creatures,
