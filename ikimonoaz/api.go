@@ -72,8 +72,8 @@ func CollectArticles(userID string, page int) ([]userdata.Article, error) {
 	return resp.Data.Articles, nil
 }
 
-func CollectComments(articleID string) ([]userdata.Comment, error) {
-	path := fmt.Sprintf("comments/list?articleId=%s&offset=0&isFuture=false", articleID)
+func CollectComments(articleID int) ([]userdata.Comment, error) {
+	path := fmt.Sprintf("comments/list?articleId=%d&offset=0&isFuture=false", articleID)
 	body, err := requestToIkimonoAZ(path)
 	if err != nil {
 		return nil, err
@@ -126,7 +126,7 @@ func CollectAllUserData(userID string) (userdata.UserData, error) {
 	}
 
 	for _, article := range articles {
-		comments, err := CollectComments(string(article.ID))
+		comments, err := CollectComments(article.ID)
 		if err != nil {
 			return userdata.UserData{}, err
 		}
