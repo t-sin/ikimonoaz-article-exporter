@@ -57,6 +57,13 @@ const indexTemplate = `
         margin-left: 1em;
         margin-bottom: 0.5em;
       }
+      a {
+        color: #0a5484;
+      }
+      a:hover {
+        text-decoration: none;
+        color: #0a5484;
+      }
       /*  layout */
       .meister::before {
         content: "🏅";
@@ -122,7 +129,7 @@ const indexTemplate = `
             {{ #articles }}
             <li>
               <article>
-                <h3>{{ title }}</h3>
+                <h3><a href="./articles/{{ id }}.html">{{ title }}</a></h3>
                 <p class="creatures">
                   {{ #creatures }}
                   <span class="creature">{{ name }}</span><span class="creature-place">@{{ place }}</span>
