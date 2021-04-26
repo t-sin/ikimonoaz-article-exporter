@@ -23,3 +23,7 @@ func render(template string, context interface{}) (string, error) {
 func RenderIndex(context interface{}) (string, error) {
 	return render(indexTemplate, context)
 }
+
+func RenderArticle(context interface{}) (string, error) {
+	return render(articleTemplate, context)
+}
