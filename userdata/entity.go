@@ -42,7 +42,7 @@ type Article struct {
 	MediaList    []Media    `json:"media"`
 	CreatureList []Creature `json:"creatures"`
 	Tags         []Tag      `json:"tags"`
-	CommentList  []Comment
+	CommentList  []Comment  `json:"comments"`
 }
 
 // ユーザ情報。
@@ -56,6 +56,6 @@ type User struct {
 
 // このプログラムで扱うすべてのユーザ情報。
 type UserData struct {
-	User     User
-	Articles []Article
+	User     User      `json:"user"`
+	Articles []Article `json:"articles"`
 }
