@@ -22,7 +22,7 @@ func downloadMedia(url string) (*media, error) {
 	matches := pat.FindStringSubmatch(url)
 	if len(matches) != 3 {
 		return nil, xerrors.Errorf("invalid media URL: '%s'", url)
-	} 
+	}
 
 	media := media{Name: matches[1], Type: matches[2]}
 
