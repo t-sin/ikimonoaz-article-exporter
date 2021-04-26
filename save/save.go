@@ -91,6 +91,12 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 		if err := saveArticle(dir, a); err != nil {
 			return err
 		}
+
+		for _, m := range a.MediaList {
+			if err := saveMedia(dir, m.URL); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
