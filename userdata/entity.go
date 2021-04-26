@@ -25,10 +25,15 @@ type Tag struct {
 	Name string `json:"name"`
 }
 
+type CommentUser struct {
+	Name string `json:"user_name"`
+}
+
 // 記事のコメントデータ。
 type Comment struct {
-	Comment  string `json:"comment"`
-	UserName string `json:"user_name"`
+	Comment   string      `json:"comment"`
+	User      CommentUser `json:"user"`
+	CreatedAt time.Time   `json:"create_date"`
 }
 
 // 記事データ。
@@ -50,7 +55,7 @@ type User struct {
 	Name            string   `json:"user_name"`
 	Profile         string   `json:"profile"`
 	ProfileImageURL string   `json:"profile_image_url"`
-	MeisterList     []string // マイスター一覧
+	MeisterList     []string `json:"meister"`    // マイスター一覧
 	PlaceName       string   `json:"place_name"` // よく行く園館
 }
 
