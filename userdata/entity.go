@@ -1,6 +1,7 @@
 package userdata
 
 import (
+	"regexp"
 	"time"
 )
 
@@ -9,6 +10,8 @@ type Media struct {
 	URL       string `json:"url"`
 	Thumbnail string `json:"movie_thumbnail"`
 }
+
+var MediaUrlPat *regexp.Regexp = regexp.MustCompile(`^.+/([^/]+?)/([^.]+?).([^.]+)$`)
 
 type Place struct {
 	Name string `json:"name"`

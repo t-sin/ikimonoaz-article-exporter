@@ -5,9 +5,10 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"regexp"
 
 	"golang.org/x/xerrors"
+
+	"ikimonoaz-exporter/userdata"
 )
 
 type media struct {
@@ -16,15 +17,14 @@ type media struct {
 	Body []byte
 }
 
-var pat *regexp.Regexp = regexp.MustCompile(`^.+/([^.]+).(.+)$`)
-
 func downloadMedia(url string) (*media, error) {
-	matches := pat.FindStringSubmatch(url)
-	if len(matches) != 3 {
+	matches := userdata.MediaUrlPat.FindStringSubmatch(url)
+	if len(matches) != 4 {
 		return nil, xerrors.Errorf("invalid media URL: '%s'", url)
 	}
 
-	media := media{Name: matches[1], Type: matches[2]}
+	name := fmt.Sprintf("%s_%s", matches[1], matches[2])
+	media := media{Name: name, Type: matches[3]}
 
 	resp, err := http.Get(url)
 	if err != nil {
