@@ -1,7 +1,9 @@
 package userdata
 
 import (
+	"fmt"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -61,13 +63,20 @@ func (a Article) ToMap() interface{} {
 		title = "(無題)"
 	}
 
+	contents := a.Contents
+	for _, m := range a.MediaList {
+		matches := MediaUrlPat.FindStringSubmatch(m.URL)
+		mediaPath := fmt.Sprintf("../media/%s_%s.%s", matches[1], matches[2], matches[3])
+		contents = strings.ReplaceAll(contents, m.URL, mediaPath)
+	}
+
 	return map[string]interface{}{
 		"id":          a.ID,
 		"created_at":  a.CreatedAt.Format(time.RFC3339),
 		"updated_at":  a.UpdatedAt.Format(time.RFC3339),
 		"released_at": a.ReleasedAt.Format(time.RFC3339),
 		"title":       title,
-		"contents":    a.Contents,
+		"contents":    contents,
 		"media":       media,
 		"creatures":   creatures,
 		"tags":        tags,
