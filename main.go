@@ -1,14 +1,17 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"os"
+	// "encoding/json"
+	// "fmt"
+	// "io/ioutil"
+	// "os"
+
 
 	// "ikimonoaz-exporter/ikimonoaz"
-	"ikimonoaz-exporter/save"
-	"ikimonoaz-exporter/userdata"
+	// "ikimonoaz-exporter/save"
+	// "ikimonoaz-exporter/userdata"
+
+	"ikimonoaz-exporter/gui"
 )
 
 func main() {
@@ -25,13 +28,15 @@ func main() {
 	// fmt.Printf("%s\n", u)
 
 	// デバッグ用: 標準入力からユーザデータを入れるとそれを元にエクスポートする
-	bytes, _ := ioutil.ReadAll(os.Stdin)
-	var userdata userdata.UserData
-	json.Unmarshal(bytes, &userdata)
+	// bytes, _ := ioutil.ReadAll(os.Stdin)
+	// var userdata userdata.UserData
+	// json.Unmarshal(bytes, &userdata)
 
-	targetDir := "./testdir/"
+	// targetDir := "./testdir/"
 
-	if err := save.SaveUserData(targetDir, userdata); err != nil {
-		fmt.Printf("%+v\n", err)
-	}
+	// if err := save.SaveUserData(targetDir, userdata); err != nil {
+	// 	fmt.Printf("%+v\n", err)
+	// }
+
+	gui.Start()
 }
