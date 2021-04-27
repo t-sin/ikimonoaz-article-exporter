@@ -6,6 +6,34 @@
 
 おこられたら停止します。
 
+## 使い方
+
+あとで書く
+
+## ビルド方法
+
+### 必要なもの
+
+- Go 1.16.3
+- GNU/Linux
+    - cc
+    - libglx-dev
+    - libgx-dev
+    - libxxf86vm-dev
+
+### 手順
+
+```shell-session
+# ソースコードもってくる
+$ git clone https://github.com/t-sin/ikimonoaz-exporter
+# リポジトリ内に移動
+$ cd ikimonoaz-exporter
+# 依存ライブラリをぜんぶもってくる
+$ go get -d
+# バイナリをビルド
+$ go build
+```
+
 ## TODO
 
 - [x] 記事とそのコメント、およびユーザ情報 (ユーザ名やプロフィール) を取得
