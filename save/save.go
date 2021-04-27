@@ -88,6 +88,11 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 	}
 
 	for _, a := range ud.Articles {
+		// デバッグ用: 最初の1記事のメディアデータだけ取得する
+		// if i >= 1 {
+		// 	break
+		// }
+
 		if err := saveArticle(dir, a); err != nil {
 			return err
 		}
