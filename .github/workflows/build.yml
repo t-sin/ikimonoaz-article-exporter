@@ -54,8 +54,6 @@ jobs:
       with:
         path-type: inherit
         install: mingw-w64-i686-gcc
-    - name: Get dependencies
-      run: pacman -Syu && pacman -S git mingw-w64-x86_64-toolchain
     - name: Build binary
       run: go build -o ikimonoaz-exporter.exe main.go
     - name: Pack files
