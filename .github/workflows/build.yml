@@ -1,0 +1,50 @@
+name: Build distributable zip file
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        go-version: [1.16.3]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: WillAbides/setup-go-faster@v1.5.0
+      id: setup-go-faster
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Get dependencies
+      run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Build binary
+      run: go build -o ikimonoaz-exporter main.go
+      if: matrix.os == 'ubuntu-latest'
+
+    - name: Pack files
+      run: zip 'ikimonoaz-exporter-${{ matrix-target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter
+      if: matrix.os == 'ubuntu-latest'
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: './*.zip'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - if: matrix.os == 'ubuntu-latest'
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: "RELEASENOTE.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
