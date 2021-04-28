@@ -99,7 +99,7 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 
 	fmt.Println("[ikimonoaz-exporter] 記事ページ保存中...")
 	for _, a := range ud.Articles {
-		fmt.Printf("[ikimonoaz-exporter] 記事ID: %s", a.ID)
+		fmt.Printf("[ikimonoaz-exporter] 記事ID: %d\n", a.ID)
 
 		// デバッグ用: 最初の1記事のメディアデータだけ取得する
 		// if i >= 1 {

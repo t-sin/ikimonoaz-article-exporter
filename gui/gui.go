@@ -56,6 +56,7 @@ func exportButtonClicked(s *state, fn ExportFn, b1, b2 *widget.Button) {
 	err = fn(path, url)
 	c <- true
 	if err != nil {
+		fmt.Printf("err = %v\n", err)
 		s.status.Set(fmt.Sprintf("%v", err))
 	}
 

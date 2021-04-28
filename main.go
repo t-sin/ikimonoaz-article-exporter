@@ -37,11 +37,13 @@ func export(targetPath, mypageURL string) error {
 	userID := matches[1]
 	userdata, err := ikimonoaz.CollectAllUserData(userID)
 	if err != nil {
+		fmt.Printf("err = %v\n", err)
 		return xerrors.Errorf("記事データの収集に失敗しました。\n時間をおいてもダメな場合作者に連絡ください。")
 	}
 
 	fmt.Println("[ikimonoaz-exporter] メディアデータ取得中...")
 	if err := save.SaveUserData(targetPath, userdata); err != nil {
+		fmt.Printf("err = %v\n", err)
 		return err
 	}
 
