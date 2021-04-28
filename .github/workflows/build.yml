@@ -6,47 +6,59 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  build-ubuntu:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        go-version: [1.16.3]
         include:
           - os: ubuntu-latest
-            target: x86_64-linux
-
-    runs-on: ${{ matrix.os }}
-
+            target: ubuntu
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: WillAbides/setup-go-faster@v1.5.0
-      id: setup-go-faster
+    - uses: actions/setup-go@v2
       with:
-        go-version: ${{ matrix.go-version }}
-
+        go-version: 1.16.3
     - name: Get dependencies
       run: sudo apt-get update && sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
-      if: matrix.os == 'ubuntu-latest'
-
     - name: Build binary
       run: go build -o ikimonoaz-exporter main.go
-      if: matrix.os == 'ubuntu-latest'
-
     - name: Pack files
       run: zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter
-      if: matrix.os == 'ubuntu-latest'
-
     - name: Upload release files
       uses: softprops/action-gh-release@v1
       with:
         files: './*.zip'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Update release page
       uses: softprops/action-gh-release@v1
       with:
         body_path: "RELEASENOTE.md"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: matrix.os == 'ubuntu-latest'
+
+  build-window:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+            MSYSTEM: MINGW32
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.16.3
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.MSYSTEM }}
+        path-type: inherit
+        install: mingw-w64-i686-gcc
+    - name: Get dependencies
+      run: pacman -Syu && pacman -S git mingw-w64-x86_64-toolchain
+    - name: Build binary
+      run: go build -o ikimonoaz-exporter.exe main.go
+    - name: Pack files
+      run: zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter.exe
