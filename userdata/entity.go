@@ -53,13 +53,18 @@ type Article struct {
 	CommentList  []Comment  `json:"comments"`
 }
 
+// いきものマイスター
+type Meister struct {
+	Name string `json:"name"`
+}
+
 // ユーザ情報。
 type User struct {
-	Name            string   `json:"user_name"`
-	Profile         string   `json:"profile"`
-	ProfileImageURL string   `json:"profile_image_url"`
-	MeisterList     []string `json:"meister"`    // マイスター一覧
-	PlaceName       string   `json:"place_name"` // よく行く園館
+	Name            string    `json:"user_name"`
+	Profile         string    `json:"profile"`
+	ProfileImageURL string    `json:"profile_image_url"`
+	MeisterList     []Meister `json:"meister"`    // マイスター一覧
+	PlaceName       string    `json:"place_name"` // よく行く園館
 }
 
 // このプログラムで扱うすべてのユーザ情報。
