@@ -12,12 +12,14 @@ import (
 
 func prepareDirectories(dir string) error {
 	// ディレクトリを用意
-	if err := os.Mkdir(dir+"articles", 0755); err != nil {
+	path := fmt.Sprintf("%s%c%s", dir, os.PathSeparator, "articles")
+	if err := os.Mkdir(path, 0755); err != nil {
 		if !os.IsExist(err) {
 			return err
 		}
 	}
-	if err := os.Mkdir(dir+"media", 0755); err != nil {
+	path = fmt.Sprintf("%s%c%s", dir, os.PathSeparator, "media")
+	if err := os.Mkdir(path, 0755); err != nil {
 		if !os.IsExist(err) {
 			return err
 		}
@@ -34,7 +36,7 @@ func saveIndex(dir string, ud userdata.UserData) error {
 		return err
 	}
 
-	path := fmt.Sprintf("%sindex.html", dir)
+	path := fmt.Sprintf("%s%cindex.html", dir, os.PathSeparator)
 	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return err
@@ -61,7 +63,7 @@ func saveArticle(dir string, article userdata.Article) error {
 		return err
 	}
 
-	path := fmt.Sprintf("%sarticles/%d.html", dir, article.ID)
+	path := fmt.Sprintf("%s%carticles%c%d.html", dir, os.PathSeparator, os.PathSeparator, article.ID)
 	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return err

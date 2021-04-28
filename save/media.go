@@ -51,7 +51,7 @@ func saveMedia(dir string, url string) error {
 		return err
 	}
 
-	path := fmt.Sprintf("%smedia/%s.%s", dir, media.Name, media.Type)
+	path := fmt.Sprintf("%s%cmedia%c%s%s.%s", dir, os.PathSeparator, os.PathSeparator, media.Name, media.Type)
 	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return err

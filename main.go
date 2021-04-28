@@ -25,7 +25,7 @@ func export(targetPath, mypageURL string) error {
 	}
 
 	if os.IsPathSeparator(targetPath[len(targetPath)-1]) {
-		targetPath = targetPath + os.PathSeparator
+		targetPath = fmt.Sprintf("%s%c", targetPath, os.PathSeparator)
 	}
 
 	matches := mypageURLPat.FindStringSubmatch(mypageURL)
