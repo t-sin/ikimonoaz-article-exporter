@@ -1,46 +1,15 @@
 package gui
 
 import (
-	"image/color"
-	"time"
+	"fmt"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
-
-type myTheme struct{}
-
-var _ fyne.Theme = (*myTheme)(nil)
-
-func (m myTheme) Color(name fyne.ThemeColorName, variant fyne.ThemeVariant) color.Color {
-	return theme.LightTheme().Color(name, theme.VariantLight)
-}
-
-func (m myTheme) Icon(name fyne.ThemeIconName) fyne.Resource {
-	return theme.LightTheme().Icon(name)
-}
-
-func (m myTheme) Font(style fyne.TextStyle) fyne.Resource {
-	if style.Monospace {
-		return theme.LightTheme().Font(style)
-	}
-	if style.Italic {
-		return theme.LightTheme().Font(style)
-	}
-	if style.Bold {
-		return resourceRoundedMplus1pBoldTtf
-	}
-	return resourceRoundedMplus1pRegularTtf
-}
-
-func (m myTheme) Size(name fyne.ThemeSizeName) float32 {
-	return theme.LightTheme().Size(name)
-}
 
 const (
 	title       = "いきものAZ エクスポーター"
@@ -59,72 +28,87 @@ const (
 
 type state struct {
 	targetPath binding.String
+	mypageURL  binding.String
 	status     binding.String
 	dotCount   int
 }
 
-func export(s *state, fn func(), b1, b2 *widget.Button) {
+type ExportFn = func(string, string) error
+
+func exportButtonClicked(s *state, fn ExportFn, b1, b2 *widget.Button) {
 	b1.Disable()
 	b2.Disable()
 
+	path, err := s.targetPath.Get()
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
+	url, err := s.mypageURL.Get()
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return
+	}
+
 	c := make(chan bool)
 	go calculateStatus(s, c)
-	fn()
+	if err != fn(path, url) {
+		s.status.Set(fmt.Sprintf("%v", err))
+	}
 	c <- true
 
 	b1.Enable()
 	b2.Enable()
 }
 
-func Start() {
-	state := &state{
-		targetPath: binding.NewString(),
-		status:     binding.NewString(),
-		dotCount:   0,
-	}
-	state.status.Set("")
+func prepareContent(w fyne.Window, s *state, fn ExportFn) *fyne.Container {
+	// 保存先
+	targetPathLabel := widget.NewLabelWithData(s.targetPath)
 
-	app := app.New()
-	app.Settings().SetTheme(&myTheme{})
-	w := app.NewWindow(title)
+	// 保存先
+	mypageURLEntry := widget.NewEntryWithData(s.mypageURL)
+	mypageURLEntry.SetPlaceHolder("ここにマイページのアドレスを貼ってください")
 
-	w.SetFixedSize(true)
-	//	w.Resize(fyne.NewSize(width, height))
-	w.CenterOnScreen()
-
-	targetPathLabel := widget.NewLabel("")
-	targetPathLabel.Bind(state.targetPath)
+	// 保存先選択ダイアログ
 	chooserFn := func(uri fyne.ListableURI, err error) {
 		if uri != nil {
-			state.targetPath.Set(uri.Path())
+			s.targetPath.Set(uri.Path())
 		}
 	}
 	chooser := dialog.NewFolderOpen(chooserFn, w)
-
+	// 保存先選択ボタン
 	chooseButtonFn := func() {
 		chooser.Show()
 	}
 	chooseButton := widget.NewButton(captionChooseButton, chooseButtonFn)
 
+	// エクスポート開始ボタン
 	exportButton := widget.NewButton("", func() {})
 	exportButtonFn := func() {
-		fn := func() {
-			time.Sleep(10 * time.Second)
-		}
-		export(state, fn, chooseButton, exportButton)
+		// fn := func(userID, targetDir string) error {
+		// 	time.Sleep(10 * time.Second)
+		// 	return nil
+		// }
+		exportButtonClicked(s, fn, chooseButton, exportButton)
 	}
 	exportButton = widget.NewButton(captionExportButton, exportButtonFn)
 
+	// 実行ステータス
 	statusLabel := widget.NewLabel("")
-	statusLabel.Bind(state.status)
+	statusLabel.Bind(s.status)
 
+	mypageURLContainer := fyne.NewContainerWithLayout(
+		layout.NewFormLayout(),
+		widget.NewLabel("マイページURL:"),
+		mypageURLEntry,
+	)
 	targetPathContainer := fyne.NewContainerWithLayout(
-		layout.NewHBoxLayout(),
+		layout.NewFormLayout(),
 		widget.NewLabel("結果保存先:"),
 		targetPathLabel,
 	)
 	statusContainer := fyne.NewContainerWithLayout(
-		layout.NewHBoxLayout(),
+		layout.NewFormLayout(),
 		widget.NewLabel("状態:"),
 		statusLabel,
 	)
@@ -134,14 +118,35 @@ func Start() {
 		chooseButton,
 		exportButton,
 	)
+
 	container := fyne.NewContainerWithLayout(
 		layout.NewVBoxLayout(),
 		widget.NewLabel(description),
-		statusContainer,
+		mypageURLContainer,
 		targetPathContainer,
+		statusContainer,
 		buttonsContainer,
 	)
-	w.SetContent(container)
+
+	return container
+}
+
+func Start(fn ExportFn) {
+	state := &state{
+		targetPath: binding.NewString(),
+		mypageURL:  binding.NewString(),
+		status:     binding.NewString(),
+		dotCount:   0,
+	}
+
+	app := app.New()
+	app.Settings().SetTheme(&myTheme{})
+	w := app.NewWindow(title)
+
+	w.SetFixedSize(true)
+	// w.Resize(fyne.NewSize(width, height))
+	w.CenterOnScreen()
+	w.SetContent(prepareContent(w, state, fn))
 
 	w.ShowAndRun()
 }

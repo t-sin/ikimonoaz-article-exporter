@@ -6,13 +6,16 @@ import (
 	// "io/ioutil"
 	// "os"
 
-
 	// "ikimonoaz-exporter/ikimonoaz"
 	// "ikimonoaz-exporter/save"
 	// "ikimonoaz-exporter/userdata"
 
 	"ikimonoaz-exporter/gui"
 )
+
+func export(targetPath, mypageURL string) error {
+	return nil
+}
 
 func main() {
 	// userID := "7308"
@@ -38,5 +41,5 @@ func main() {
 	// 	fmt.Printf("%+v\n", err)
 	// }
 
-	gui.Start()
+	gui.Start(export)
 }
