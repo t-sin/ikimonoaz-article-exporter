@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"golang.org/x/xerrors"
+
 	"ikimonoaz-exporter/template"
 	"ikimonoaz-exporter/userdata"
 )
@@ -80,11 +82,13 @@ func saveArticle(dir string, article userdata.Article) error {
 
 func SaveUserData(dir string, ud userdata.UserData) error {
 	if err := prepareDirectories(dir); err != nil {
-		return err
+		fmt.Printf("%v\n", err)
+		return xerrors.Errorf("データ保存用フォルダの作成に失敗しました")
 	}
 
 	if err := saveIndex(dir, ud); err != nil {
-		return err
+		fmt.Printf("%v\n", err)
+		return xerrors.Errorf("ユーザ情報のエクスポートに失敗しました")
 	}
 
 	for _, a := range ud.Articles {
@@ -94,12 +98,14 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 		// }
 
 		if err := saveArticle(dir, a); err != nil {
-			return err
+			fmt.Printf("%v\n", err)
+			return xerrors.Errorf("記事のエクスポートに失敗しました")
 		}
 
 		for _, m := range a.MediaList {
 			if err := saveMedia(dir, m.URL); err != nil {
-				return err
+				fmt.Printf("%v\n", err)
+				return xerrors.Errorf("画像・動画のダウンロードに失敗しました")
 			}
 		}
 	}
