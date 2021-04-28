@@ -81,6 +81,10 @@ func saveArticle(dir string, article userdata.Article) error {
 }
 
 func SaveUserData(dir string, ud userdata.UserData) error {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		return xerrors.Errorf("保存先フォルダが存在しません")
+	}
+
 	if err := prepareDirectories(dir); err != nil {
 		fmt.Printf("%v\n", err)
 		return xerrors.Errorf("データ保存用フォルダの作成に失敗しました")
