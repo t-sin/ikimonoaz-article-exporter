@@ -4,7 +4,7 @@ import (
 	// "encoding/json"
 	"fmt"
 	// "io/ioutil"
-	// "os"
+	"os"
 	"regexp"
 
 	"golang.org/x/xerrors"
@@ -18,14 +18,14 @@ import (
 var mypageURLPat = regexp.MustCompile(`^https://ikimonoaz.ikimonopal.jp/profile/u/([0-9]+)$`)
 
 func export(targetPath, mypageURL string) error {
-	fmt.Println("[ikimonoaz-exporter] エクスポート完了")
+	fmt.Println("[ikimonoaz-exporter] エクスポート開始")
 
 	if targetPath == "" {
 		return xerrors.Errorf("保存先フォルダを選んでください")
 	}
 
-	if targetPath[len(targetPath)-1] != '/' {
-		targetPath = targetPath + "/"
+	if os.IsPathSeparator(targetPath[len(targetPath)-1]) {
+		targetPath = targetPath + os.PathSeparator
 	}
 
 	matches := mypageURLPat.FindStringSubmatch(mypageURL)
