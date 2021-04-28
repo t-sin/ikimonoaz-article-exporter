@@ -33,7 +33,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
 
     - name: Pack files
-      run: zip 'ikimonoaz-exporter-${{ matrix-target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter
+      run: zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter
       if: matrix.os == 'ubuntu-latest'
 
     - name: Upload release files
