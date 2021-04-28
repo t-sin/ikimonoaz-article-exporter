@@ -85,11 +85,16 @@ func (a Article) ToMap() interface{} {
 }
 
 func (u User) ToMap() interface{} {
+	meister := make([]string, len(u.MeisterList))
+	for i, m := range u.MeisterList {
+		meister[i] = m.Name
+	}
+
 	return map[string]interface{}{
 		"name":              u.Name,
 		"profile":           u.Profile,
 		"profile_image_url": u.ProfileImageURL,
-		"meister":           u.MeisterList,
+		"meister":           meister,
 		"place":             u.PlaceName,
 	}
 }
