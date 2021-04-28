@@ -37,7 +37,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-window:
+  build-windows:
     strategy:
       matrix:
         include:
@@ -53,7 +53,9 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         path-type: inherit
-        install: mingw-w64-i686-gcc
+        install: >-
+          mingw-w64-i686-gcc
+          zip
     - name: Build binary
       run: go build -o ikimonoaz-exporter.exe main.go
     - name: Pack files
