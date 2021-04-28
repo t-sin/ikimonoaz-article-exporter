@@ -52,6 +52,7 @@ $ go build
 ## 作者
 
 - t-sin (<shinichi.tanaka45@gmail.com>)
+    - [いきものなほしいものリスト](https://www.amazon.jp/hz/wishlist/ls/9LL3K23SPC1R?ref_=wl_share)
 
 ## スペシャルサンクス (開発中ずっと聴いてた)
 
