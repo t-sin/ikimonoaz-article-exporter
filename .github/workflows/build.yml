@@ -55,9 +55,10 @@ jobs:
         update: true
         path-type: inherit
         install: >-
-          mingw-w64-i686-gcc
+          mingw-w64-x86_64-gcc
           zip
     - name: Build binary
       run: go build -o ikimonoaz-exporter.exe main.go
     - name: Pack files
-      run: msys2 zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter.exe
+      shell: msys2 {0}
+      run: zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter.exe
