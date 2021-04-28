@@ -62,3 +62,9 @@ jobs:
     - name: Pack files
       shell: msys2 {0}
       run: zip 'ikimonoaz-exporter-${{ matrix.target }}.zip' README.md LICENSE_J LICENSE_E ikimonoaz-exporter.exe
+    - name: Upload release files
+      uses: softprops/action-gh-release@v1
+      with:
+        files: './*.zip'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
