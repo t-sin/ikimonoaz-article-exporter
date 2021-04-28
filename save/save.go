@@ -1,6 +1,7 @@
 package save
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -23,6 +24,31 @@ func prepareDirectories(dir string) error {
 		if !os.IsExist(err) {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func saveJSON(dir string, ud userdata.UserData) error {
+	u, err := json.Marshal(ud)
+	if err != nil {
+		return err
+	}
+
+	path := fmt.Sprintf("%s%cuserdata.json", dir, os.PathSeparator)
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+
+	f.Truncate(0)
+	f.Seek(0, 0)
+	if _, err := f.WriteString(string(u)); err != nil {
+		return err
+	}
+
+	if err := f.Close(); err != nil {
+		return err
 	}
 
 	return nil
@@ -91,6 +117,12 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 	if err := prepareDirectories(dir); err != nil {
 		fmt.Printf("%v\n", err)
 		return xerrors.Errorf("データ保存用フォルダの作成に失敗しました")
+	}
+
+	fmt.Println("[ikimonoaz-exporter] JSONデータ保存中...")
+	if err := saveJSON(dir, ud); err != nil {
+		fmt.Printf("%v\n", err)
+		return xerrors.Errorf("ユーザ情報JSONのエクスポートに失敗しました")
 	}
 
 	fmt.Println("[ikimonoaz-exporter] indexページ保存中...")
