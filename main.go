@@ -2,44 +2,59 @@ package main
 
 import (
 	// "encoding/json"
-	// "fmt"
+	"fmt"
 	// "io/ioutil"
 	// "os"
+	"regexp"
 
-	// "ikimonoaz-exporter/ikimonoaz"
-	// "ikimonoaz-exporter/save"
-	// "ikimonoaz-exporter/userdata"
+	"golang.org/x/xerrors"
 
 	"ikimonoaz-exporter/gui"
+	"ikimonoaz-exporter/ikimonoaz"
+	"ikimonoaz-exporter/save"
+	// "ikimonoaz-exporter/userdata"
 )
 
+var mypageURLPat = regexp.MustCompile(`^https://ikimonoaz.ikimonopal.jp/profile/u/([0-9]+)$`)
+
 func export(targetPath, mypageURL string) error {
+	fmt.Println("[ikimonoaz-exporter] エクスポート完了")
+
+	if targetPath == "" {
+		return xerrors.Errorf("保存先フォルダを選んでください")
+	}
+
+	if targetPath[len(targetPath)-1] != '/' {
+		targetPath = targetPath + "/"
+	}
+
+	matches := mypageURLPat.FindStringSubmatch(mypageURL)
+	if len(matches) != 2 {
+		return xerrors.Errorf("マイページのURLでない文字列が入力されました")
+	}
+
+	fmt.Println("[ikimonoaz-exporter] ユーザ情報および記事データ取得中...")
+	userID := matches[1]
+	userdata, err := ikimonoaz.CollectAllUserData(userID)
+	if err != nil {
+		return xerrors.Errorf("記事データの収集に失敗しました。\n時間をおいてもダメな場合作者に連絡ください。")
+	}
+
+	fmt.Println("[ikimonoaz-exporter] メディアデータ取得中...")
+	if err := save.SaveUserData(targetPath, userdata); err != nil {
+		return err
+	}
+
+	fmt.Println("[ikimonoaz-exporter] エクスポート完了")
+
 	return nil
 }
 
 func main() {
-	// userID := "7308"
-	// userdata, err := ikimonoaz.CollectAllUserData(userID)
-	// if err != nil {
-	// 	// データ (メディアファイル以外) 収集に失敗した
-	// 	fmt.Printf("%+v\n", err)
-	// 	return
-	// }
-
-	// // デバッグ用: ユーザデータを取得したら標準出力に書き出す
-	// u, _ := json.Marshal(&userdata)
-	// fmt.Printf("%s\n", u)
-
 	// デバッグ用: 標準入力からユーザデータを入れるとそれを元にエクスポートする
 	// bytes, _ := ioutil.ReadAll(os.Stdin)
 	// var userdata userdata.UserData
 	// json.Unmarshal(bytes, &userdata)
-
-	// targetDir := "./testdir/"
-
-	// if err := save.SaveUserData(targetDir, userdata); err != nil {
-	// 	fmt.Printf("%+v\n", err)
-	// }
 
 	gui.Start(export)
 }
