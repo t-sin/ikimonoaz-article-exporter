@@ -52,10 +52,11 @@ func exportButtonClicked(s *state, fn ExportFn, b1, b2 *widget.Button) {
 
 	c := make(chan bool)
 	go calculateStatus(s, c)
-	if err != fn(path, url) {
+	err = fn(path, url)
+	c <- true
+	if err != nil {
 		s.status.Set(fmt.Sprintf("%v", err))
 	}
-	c <- true
 
 	b1.Enable()
 	b2.Enable()
