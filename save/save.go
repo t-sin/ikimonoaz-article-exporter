@@ -85,27 +85,34 @@ func SaveUserData(dir string, ud userdata.UserData) error {
 		return xerrors.Errorf("保存先フォルダが存在しません")
 	}
 
+	fmt.Println("[ikimonoaz-exporter] 保存ディレクトリ用意中...")
 	if err := prepareDirectories(dir); err != nil {
 		fmt.Printf("%v\n", err)
 		return xerrors.Errorf("データ保存用フォルダの作成に失敗しました")
 	}
 
+	fmt.Println("[ikimonoaz-exporter] indexページ保存中...")
 	if err := saveIndex(dir, ud); err != nil {
 		fmt.Printf("%v\n", err)
 		return xerrors.Errorf("ユーザ情報のエクスポートに失敗しました")
 	}
 
+	fmt.Println("[ikimonoaz-exporter] 記事ページ保存中...")
 	for _, a := range ud.Articles {
+		fmt.Printf("[ikimonoaz-exporter] 記事ID: %s", a.ID)
+
 		// デバッグ用: 最初の1記事のメディアデータだけ取得する
 		// if i >= 1 {
 		// 	break
 		// }
 
+		fmt.Println("[ikimonoaz-exporter] 記事ページ保存中...")
 		if err := saveArticle(dir, a); err != nil {
 			fmt.Printf("%v\n", err)
 			return xerrors.Errorf("記事のエクスポートに失敗しました")
 		}
 
+		fmt.Println("[ikimonoaz-exporter] 記事のメディアファイル保存中...")
 		for _, m := range a.MediaList {
 			if err := saveMedia(dir, m.URL); err != nil {
 				fmt.Printf("%v\n", err)
