@@ -1,0 +1,201 @@
+<html>
+  <head>
+    <title>いきものAZ エクスポーター</title>
+    <style>
+      /* global layout */
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: #f7f7f7;
+        color: #333333;
+        font-size: 1.1em;
+      }
+      header {
+        padding: 30px;
+      }
+      footer {
+        padding: 1em 0;
+      }
+      h1 {
+        text-align: center;
+      }
+      #container {
+        margin: 0 auto;
+        max-width: 900px;
+      }
+      main {
+        padding: 40px;
+        background-color: #ffffff;
+        box-shadow: 2px 2px 4px 4px rgba(0,0,0,0.1);
+      }
+
+      section {
+        margin: 2em 0;
+      }
+      h2 {
+        margin-bottom: 0.5em;
+      }
+      ul {
+        margin-left: 50px;
+      }
+      ol {
+        margin-left: 50px;
+      }
+      ol li {
+        margin: 0.5em 0;
+      }
+      img {
+        max-width: 800px;
+      }
+      code {
+        margin: 1px;
+        padding: 1px 4px;
+        border: solid 1px #afcdde;
+        border-radius: 4px;
+        background-color: #f0faff;;
+        color: #1e4f6b;
+        font-size: 1.1em;
+      }
+      h3 {
+        margin-top: 1em;
+      }
+      dl {
+        margin-left: 30px;
+      }
+      dt {
+        font-weight: 500;
+      }
+      dd {
+        margin-left: 1em;
+        margin-bottom: 0.5em;
+      }
+      a {
+        color: #0a5484;
+      }
+      a:hover {
+        text-decoration: none;
+        color: #0a5484;
+      }
+      /*  layout */
+      .meister::before {
+        content: "🏅";
+      }
+      .tag {
+        margin: 1px;
+        padding: 1px 4px;
+        border: solid 1px #afcdde;
+        border-radius: 4px;
+        background-color: #dff0f9;
+        color: #1e4f6b;
+        font-size: 0.8em;
+      }
+      .creatures {
+        font-size: 0.9em;
+      }
+      .creature {
+        padding: 1px 2px;
+        color: #072b40;
+      }
+      .creature-place {
+        font-size: 0.85em;
+        color: #072b40;
+      }
+      .date {
+        color: #777777;
+        font-size: 0.85em;
+      }
+      .date span {
+        font-size: 0.85em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+
+      <header>
+        <h1>いきものAZ エクスポーター</h1>
+      </header>
+    
+      <main>
+        <section>
+          <h2>これはなに？</h2>
+          <p>
+            <a href="https://ikimonoaz.ikimonopal.jp/">いきもの特化型SNS「いきものAZ」</a>の投稿記事や写真、動画をパソコンに保存するためのツールです。
+          </p>
+        </section>
+
+        </section>
+          <h2>背景</h2>
+          <p>
+            寂しいですが、<a href="https://ikimonoaz.ikimonopal.jp/article/56123">いきもの特化型SNSの「いきものAZ」がサービス終了</a>することになりました。ぼくは2年前に投稿が止まってしまいましたが (撮った写真の整理が追いつかなくて) 、せっかく書いた記事やその写真を思い出としてとっておきたいなと思いました。
+          </p>
+          <p>
+            公式にはデータのエクスポート機能は提供されていないようですので、自分用にエクスポートアプリをつくりました。
+          </p>
+        </section>
+
+        <section>
+          <h2>使い方</h2>
+
+          <p>以下のように使ってください。</p>
+          <ol>
+            <li><a href="https://github.com/t-sin/ikimonoaz-exporter/releases">このページ</a>を開く</li>
+            <li>
+              一番上側にある<strong>新しいバージョンの</strong><code>ikimonoaz-exporter-XXXXX.zip</code>をダウンロードして解凍する
+              <img src="github-release.png" title="zipファイルをダウンロードする場所を示す画像" />
+              <ul>
+                <li><code>XXXXX</code>は自分の使っているオペレーティングシステムを選んでください</li>
+                <li> おそらくたいていの方は<code>windows</code>です</li>
+                <li>英語が多くてすみません</li>
+              </ul>
+            </li>
+            <li>解凍先にある<code>ikimonoaz-exporter.exe</code>をダブルクリックする</li>
+            <li>
+              いきものAZのマイページにいき、アドレス欄からURLをコピペする<br>
+              <img src="mypage-url.png" title="マイページのアドレスの場所を示す画像" />
+            </li>
+            <li><code>保存先フォルダを選ぶ</code>をクリック (いくつかファイルとフォルダができます)</li>
+            <li>データを保存するフォルダを選択して<code>Open</code>を押す (英語ですみません)</li>
+            <li><code>エクスポート開始</code>をクリック</li>
+            <li>待つ (投稿量によりますが5分くらい時間がかかります)</li>
+            <li>完了したら<code>エクスポート完了</code>と表示されるので保存先の<code>index.html</code>をダブルクリック</li>
+            <li>🐿️🥳</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>スペシャルサンクス (開発中ずっと聴いてた)</h2>
+
+          <ul>
+            <li>
+              <a href="https://www.tokyo-zoo.net/topic/topics_detail?kind=news&inst=&link_num=25526">いのかしら りす音頭</a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/watch?v=5YLSP6b6yHg">マヌルネコのうた</a>  
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>作者</h2>
+
+          <ul>
+            <li>
+              t-sin (twitter: <a href="https://twitter.com/sin_clav">@sin_clav</a>)
+            </li>
+            <li>
+              <a href="https://www.amazon.jp/hz/wishlist/ls/9LL3K23SPC1R?ref_=wl_share">いきものなほしいものリスト</a>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer>
+        <a href="https://github.com/t-sin/ikimonoaz-exporter">このソフトウェアのソースコードはこちら</a>
+      </footer>
+
+    </div>
+  </body>
+</html>
